@@ -11,6 +11,19 @@ public class LabyrinthSolution{
 	static boolean[][] visited;
 	
 	/**
+	/ Method that the user calls to solve the method
+	/ @param l the maze that the user wants to solve
+	/ @return an int array that contains the list of moves
+	*/
+	public static int[] solve(Labyrinth l){
+		visited = new boolean[l.rows][l.cols];
+		moves = new ArrayList<Integer>();
+		
+		boolean solved = solveMaze(l, 0, 0);
+		return toSolution(l);
+	}
+	
+	/**
 	/ Makes moves to solve the maze and records the moves in the ArrayList
 	/ @param l the maze that will be solved
 	/ @param row the curremy y coordinate
@@ -43,13 +56,13 @@ public class LabyrinthSolution{
 		return solved;
 	}
  
- /**
- / Determines whether or not there is a safe move available, if there isn't it begins backtracking
- / @param l the maze that is being solved
- / @param row the current y coordinate
- / @param column the current x coordinate
- / @return whether or not a safe move is available
- */
+	/**
+	/ Determines whether or not there is a safe move available, if there isn't it begins backtracking
+	/ @param l the maze that is being solved
+	/ @param row the current y coordinate
+	/ @param column the current x coordinate
+	/ @return whether or not a safe move is available
+	*/
 	static boolean isSafeMove(Labyrinth l, int row, int column){
 		//checks to see if a safe move is possible
 		if(isSafe(l, row + 1, column))
@@ -112,19 +125,17 @@ public class LabyrinthSolution{
 	}
 	
 	public static void main(String[] args){
-		int rows = Integer.parseInt(args[0]);
-		int columns = Integer.parseInt(args[1]);
-		Labyrinth l = new Labyrinth(rows, columns);
-		visited = new boolean[l.rows][l.cols];
-		moves = new ArrayList<Integer>();
+		Labyrinth l = new Labyrinth(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
 		
-		System.out.println(args[0]);
-		System.out.println(args[1]);
+		System.out.println(args[0] + " " + args[1]);
 		
-		boolean test = solveMaze(l, 0, 0);
+		int[] solution = solve(l);
 		
-		System.out.println(test);
-		int[] solution = toSolution(l);
 		System.out.println(l.solves(solution));
+		
+		for(int i = 0; i < solution.length; i++)
+			System.out.print(solution[i] + " ");
+		
+		l.printGrid();
 	}
 }
